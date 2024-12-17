@@ -1,0 +1,7 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="symptoms">Entrez vos symptômes (séparez-les par une virgule) :</label>
+    <input type="text" name="symptoms" id="symptoms" required>
+    <button type="submit">Soumettre</button>
+  </form>
+  

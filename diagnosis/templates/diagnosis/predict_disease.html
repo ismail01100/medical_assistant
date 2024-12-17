@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédiction de Maladie</title>
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 400px;
+            padding: 20px;
+        }
+        .result-container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            height: fit-content;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <!-- Colonne pour le formulaire -->
+            <div class="col-md-6 form-container">
+                <h3 class="text-center mb-3">Prédiction de Maladie</h3>
+                <form method="POST" class="border p-4 rounded shadow-sm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="Fever" class="form-label">Fever (0: No, 1: Yes):</label>
+                        <input type="number" class="form-control" id="Fever" name="Fever" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Cough" class="form-label">Cough (0: No, 1: Yes):</label>
+                        <input type="number" class="form-control" id="Cough" name="Cough" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Fatigue" class="form-label">Fatigue (0: No, 1: Yes):</label>
+                        <input type="number" class="form-control" id="Fatigue" name="Fatigue" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="DifficultyBreathing" class="form-label">Difficulty Breathing (0: No, 1: Yes):</label>
+                        <input type="number" class="form-control" id="DifficultyBreathing" name="Difficulty Breathing" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Age" class="form-label">Age:</label>
+                        <input type="number" class="form-control" id="Age" name="Age" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Gender" class="form-label">Gender (0: Female, 1: Male):</label>
+                        <input type="number" class="form-control" id="Gender" name="Gender" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="BloodPressure" class="form-label">Blood Pressure (0: Normal, 1: Low):</label>
+                        <input type="number" class="form-control" id="BloodPressure" name="Blood Pressure" min="0" max="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CholesterolLevel" class="form-label">Cholesterol Level (0: Normal, 2: High):</label>
+                        <input type="number" class="form-control" id="CholesterolLevel" name="Cholesterol Level" min="0" max="2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Prédire</button>
+                </form>
+            </div>
+
+            <!-- Colonne pour le résultat -->
+            <div class="col-md-4 result-container ms-3">
+                <h4 class="text-center">Résultat du Diagnostic</h4>
+                {% if result %}
+                    <div class="text-center mt-3">
+                        <p class="fw-bold display-6">{{ result }}</p>
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted mt-3">Aucun résultat pour le moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Lien vers Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
