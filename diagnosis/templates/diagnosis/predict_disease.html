@@ -64,17 +64,22 @@
                 </form>
             </div>
 
-            <!-- Colonne pour le résultat -->
             <div class="col-md-4 result-container ms-3">
                 <h4 class="text-center">Résultat du Diagnostic</h4>
                 {% if result %}
-                    <div class="text-center mt-3">
-                        <p class="fw-bold display-6">{{ result }}</p>
-                    </div>
+                    <p class="fw-bold text-center display-6">{{ result }}</p>
+                    {% if result == 'Malade' and disease_name %}
+                        <p class="mt-3"><strong>Maladie prédite :</strong> {{ disease_name }}</p>
+                        {% if recommended_medication %}
+                            <p class="mt-3 text-success"><strong>Médicament recommandé :</strong> {{ recommended_medication }}</p>
+                        {% endif %}
+                    {% endif %}
                 {% else %}
                     <p class="text-center text-muted mt-3">Aucun résultat pour le moment.</p>
                 {% endif %}
             </div>
+            
+
         </div>
     </div>
 

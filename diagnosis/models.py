@@ -38,3 +38,12 @@ class Diagnosis(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     outcome = models.CharField(max_length=50)  # 'Positive' or 'Negative'
+
+
+
+class Medication(models.Model):
+    disease = models.CharField(max_length=100, unique=True)
+    medication = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"{self.disease} - {self.medication}"

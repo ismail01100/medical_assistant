@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Medication
 
-# Register your models here.
+# Enregistrer le modèle Medication dans l'admin
+admin.site.register(Medication)
