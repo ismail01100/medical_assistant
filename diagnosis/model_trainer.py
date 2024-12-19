@@ -17,38 +17,35 @@ for col in ['Fever', 'Cough', 'Fatigue', 'Difficulty Breathing',
     dataset[col] = le.fit_transform(dataset[col])
     label_encoders[col] = le
 
-# Supposons que 'Outcome Variable' est la cible (0 pour négatif, 1 pour positif)
+# Encodeur pour Outcome Variable et Disease
 le_outcome = LabelEncoder()
 dataset['Outcome Variable'] = le_outcome.fit_transform(dataset['Outcome Variable'])
 
-# Séparer les caractéristiques (features) et la cible
+le_disease = LabelEncoder()
+dataset['Disease'] = le_disease.fit_transform(dataset['Disease'])
+
+# Caractéristiques
 X = dataset[['Fever', 'Cough', 'Fatigue', 'Difficulty Breathing', 
              'Age', 'Gender', 'Blood Pressure', 'Cholesterol Level']]
-y = dataset['Outcome Variable']
 
-# Diviser les données en ensemble d'entraînement et ensemble de test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Modèle pour prédire malade/non malade
+y_outcome = dataset['Outcome Variable']
+X_train, X_test, y_train, y_test = train_test_split(X, y_outcome, test_size=0.3, random_state=42)
 
-print("Données préparées avec succès.")
-print(X_train.head())
+model_outcome = RandomForestClassifier(n_estimators=100, random_state=42)
+model_outcome.fit(X_train, y_train)
+joblib.dump(model_outcome, 'diagnosis/saved_model/outcome_model.pkl')
 
-# Initialiser le modèle Random Forest
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+# Modèle pour prédire la maladie
+y_disease = dataset['Disease']
+X_train_disease, X_test_disease, y_train_disease, y_test_disease = train_test_split(X, y_disease, test_size=0.3, random_state=42)
 
-# Entraîner le modèle avec les données d'entraînement
-model.fit(X_train, y_train)
+model_disease = RandomForestClassifier(n_estimators=100, random_state=42)
+model_disease.fit(X_train_disease, y_train_disease)
+joblib.dump(model_disease, 'diagnosis/saved_model/disease_model.pkl')
 
-# Faire des prédictions sur les données de test
-y_pred = model.predict(X_test)
+# Sauvegarder le LabelEncoder pour décoder les maladies
+joblib.dump(le_disease, 'diagnosis/saved_model/disease_label_encoder.pkl')
+print("LabelEncoder sauvegardé pour la colonne Disease.")
 
-# Évaluer le modèle
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Précision du modèle : {accuracy * 100:.2f}%")
-
-# Afficher un rapport de classification détaillé
-print("Rapport de classification :")
-print(classification_report(y_test, y_pred))
-# Sauvegarder le modèle entraîné
-model_file = 'diagnosis/saved_model/random_forest_model.pkl'
-joblib.dump(model, model_file)
-print(f"Modèle sauvegardé avec succès dans : {model_file}")
+print("Modèles sauvegardés avec succès.")
